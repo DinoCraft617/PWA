@@ -1,0 +1,24 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="128" fill="#475569"/>
+  
+  <!-- Wallet Icon -->
+  <g transform="translate(128, 128)">
+    <!-- Outer wallet -->
+    <rect x="20" y="60" width="216" height="160" rx="16" fill="#ffffff" opacity="0.95"/>
+    
+    <!-- Wallet flap -->
+    <path d="M 36 60 L 36 40 C 36 31.16 43.16 24 52 24 L 204 24 C 212.84 24 220 31.16 220 40 L 220 60" 
+          fill="#e2e8f0" stroke="#ffffff" stroke-width="2"/>
+    
+    <!-- Card slot -->
+    <rect x="180" y="110" width="36" height="60" rx="8" fill="#475569"/>
+    
+    <!-- Dollar sign -->
+    <text x="90" y="155" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="#475569">$</text>
+    
+    <!-- Decorative lines -->
+    <line x1="40" y1="100" x2="100" y2="100" stroke="#cbd5e1" stroke-width="4" stroke-linecap="round"/>
+    <line x1="40" y1="120" x2="80" y2="120" stroke="#cbd5e1" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>
