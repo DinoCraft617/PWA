@@ -44,18 +44,15 @@ export default function App() {
   const [expenseCategories, setExpenseCategories] = useState<string[]>([]);
   const [newCategory, setNewCategory] = useState("");
   
-  // Notification settings
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [notificationFrequency, setNotificationFrequency] = useState("daily");
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>("default");
 
-  // Check notification permission on mount
   useEffect(() => {
     if ('Notification' in window) {
       setNotificationPermission(Notification.permission);
     }
     
-    // Load notification settings from localStorage
     const savedNotificationsEnabled = localStorage.getItem('notifications-enabled');
     const savedNotificationFrequency = localStorage.getItem('notification-frequency');
     
@@ -67,7 +64,6 @@ export default function App() {
     }
   }, []);
 
-  // Request notification permission
   const requestNotificationPermission = async () => {
     if (!('Notification' in window)) {
       toast.error('Las notificaciones no están soportadas en este navegador');
@@ -93,18 +89,17 @@ export default function App() {
     return false;
   };
 
-  // Show a notification
   const showNotification = (title: string, body: string) => {
     if ('Notification' in window && Notification.permission === 'granted') {
       if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-        // Send message to service worker to show notification
+    
         navigator.serviceWorker.controller.postMessage({
           type: 'SHOW_NOTIFICATION',
           title,
           body
         });
       } else {
-        // Fallback to regular notification
+    
         new Notification(title, {
           body,
           icon: '/icon-192.png',
@@ -115,7 +110,7 @@ export default function App() {
     }
   };
 
-  // Toggle notifications
+
   const toggleNotifications = async (enabled: boolean) => {
     if (enabled) {
       const hasPermission = notificationPermission === 'granted' || await requestNotificationPermission();
@@ -124,7 +119,7 @@ export default function App() {
         localStorage.setItem('notifications-enabled', 'true');
         toast.success('Notificaciones activadas');
         
-        // Show test notification
+        
         setTimeout(() => {
           showNotification(
             '¡Recordatorios activados!',
@@ -132,7 +127,7 @@ export default function App() {
           );
         }, 1000);
         
-        // Vibrate if supported
+
         if ('vibrate' in navigator) {
           navigator.vibrate([200, 100, 200]);
         }
@@ -147,7 +142,7 @@ export default function App() {
     }
   };
 
-  // Update notification frequency
+
   const updateNotificationFrequency = (frequency: string) => {
     setNotificationFrequency(frequency);
     localStorage.setItem('notification-frequency', frequency);
@@ -161,7 +156,7 @@ export default function App() {
     }
   };
 
-  // Get frequency text
+
   const getFrequencyText = (frequency: string): string => {
     switch (frequency) {
       case 'hourly':
@@ -179,7 +174,7 @@ export default function App() {
     }
   };
 
-  // Schedule periodic notifications
+
   useEffect(() => {
     if (!notificationsEnabled || notificationPermission !== 'granted') {
       return;
@@ -188,17 +183,17 @@ export default function App() {
     const getInterval = (frequency: string): number => {
       switch (frequency) {
         case 'hourly':
-          return 60 * 60 * 1000; // 1 hour
+          return 60 * 60 * 1000; 
         case 'daily':
-          return 24 * 60 * 60 * 1000; // 24 hours
+          return 24 * 60 * 60 * 1000;
         case 'every2days':
-          return 2 * 24 * 60 * 60 * 1000; // 2 days
+          return 2 * 24 * 60 * 60 * 1000; 
         case 'every3days':
-          return 3 * 24 * 60 * 60 * 1000; // 3 days
+          return 3 * 24 * 60 * 60 * 1000; 
         case 'weekly':
-          return 7 * 24 * 60 * 60 * 1000; // 7 days
+          return 7 * 24 * 60 * 60 * 1000; 
         default:
-          return 24 * 60 * 60 * 1000; // Default to daily
+          return 24 * 60 * 60 * 1000; 
       }
     };
 
@@ -215,13 +210,11 @@ export default function App() {
       showNotification('Recordatorio de Finanzas', randomMessage);
     }, getInterval(notificationFrequency));
 
-    // Cleanup interval on unmount or when settings change
     return () => clearInterval(interval);
   }, [notificationsEnabled, notificationFrequency, notificationPermission]);
 
-  // Detect if app is already installed
   useEffect(() => {
-    // Check if already installed
+
     if (window.matchMedia('(display-mode: standalone)').matches || 
         (window.navigator as any).standalone === true) {
       setIsInstalled(true);
@@ -272,7 +265,6 @@ export default function App() {
     }
   };
 
-  // Load categories from localStorage on mount
   useEffect(() => {
     const savedCategories = localStorage.getItem('expense-categories');
     if (savedCategories) {
@@ -282,14 +274,12 @@ export default function App() {
     }
   }, []);
 
-  // Save categories to localStorage whenever they change
   useEffect(() => {
     if (expenseCategories.length > 0) {
       localStorage.setItem('expense-categories', JSON.stringify(expenseCategories));
     }
   }, [expenseCategories]);
 
-  // Load transactions from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem('financial-transactions');
     if (saved) {
@@ -297,12 +287,10 @@ export default function App() {
     }
   }, []);
 
-  // Save transactions to localStorage whenever transactions change
   useEffect(() => {
     localStorage.setItem('financial-transactions', JSON.stringify(transactions));
   }, [transactions]);
 
-  // Category management functions
   const addCategory = () => {
     if (!newCategory.trim()) {
       toast.error("Por favor ingresa un nombre para la categoría");
@@ -318,7 +306,7 @@ export default function App() {
   };
 
   const removeCategory = (category: string) => {
-    // Check if category is used in transactions
+   
     const isUsed = transactions.some(t => t.category === category);
     if (isUsed) {
       toast.error("No se puede eliminar una categoría que tiene transacciones asociadas");
@@ -377,7 +365,6 @@ export default function App() {
     toast.success("Transacción eliminada");
   };
 
-  // Calculate totals
   const totalIncome = transactions
     .filter(t => t.type === 'income')
     .reduce((sum, t) => sum + t.amount, 0);
@@ -388,14 +375,12 @@ export default function App() {
   
   const balance = totalIncome - totalExpenses;
 
-  // Export to Excel function
   const exportToExcel = () => {
     if (transactions.length === 0) {
       toast.error("No hay transacciones para exportar");
       return;
     }
 
-    // Prepare data for Excel
     const excelData = transactions.map(t => ({
       Fecha: t.date,
       Tipo: t.type === 'income' ? 'Ingreso' : 'Gasto',
@@ -404,7 +389,6 @@ export default function App() {
       Monto: t.amount
     }));
 
-    // Add summary at the end
     excelData.push({
       Fecha: '',
       Tipo: '',
@@ -434,23 +418,18 @@ export default function App() {
       Monto: balance
     });
 
-    // Create worksheet
     const ws = XLSX.utils.json_to_sheet(excelData);
-    
-    // Create workbook
+
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Transacciones");
-    
-    // Generate file name with current date
+   
     const fileName = `finanzas_${new Date().toISOString().split('T')[0]}.xlsx`;
-    
-    // Save file
+
     XLSX.writeFile(wb, fileName);
     
     toast.success("Archivo Excel exportado correctamente");
   };
 
-  // Import from Excel function
   const importFromExcel = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -461,20 +440,17 @@ export default function App() {
         const data = e.target?.result;
         const workbook = XLSX.read(data, { type: 'binary' });
         
-        // Get first sheet
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
-        
-        // Convert to JSON
+
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
-        
-        // Process and validate data
+  
         const importedTransactions: Transaction[] = [];
         let validCount = 0;
         let invalidCount = 0;
 
         jsonData.forEach((row: any) => {
-          // Skip summary rows
+  
           if (row.Descripción === 'RESUMEN' || 
               row.Descripción === 'Total Ingresos' || 
               row.Descripción === 'Total Gastos' || 
@@ -482,7 +458,6 @@ export default function App() {
             return;
           }
 
-          // Validate required fields
           if (row.Fecha && row.Tipo && row.Descripción && row.Monto) {
             const type = row.Tipo === 'Ingreso' ? 'income' : 'expense';
             const transaction: Transaction = {
@@ -513,11 +488,9 @@ export default function App() {
     };
     reader.readAsBinaryString(file);
     
-    // Reset input
     event.target.value = '';
   };
 
-  // Get expense breakdown by category
   const expensesByCategory = expenseCategories.map(category => {
     const categoryTotal = transactions
       .filter(t => t.type === 'expense' && t.category === category)
@@ -525,7 +498,6 @@ export default function App() {
     return { category, amount: categoryTotal };
   });
 
-  // Render different screens based on activeTab
   const renderOverviewScreen = () => (
     <div className="space-y-4">
       {/* Header */}
