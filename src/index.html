@@ -3,35 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  
-  <!-- SEO Meta Tags -->
+
   <meta name="description" content="Aplicación PWA para el control de finanzas personales con registro de ingresos y gastos, categorías personalizables y exportación a Excel">
   <meta name="keywords" content="finanzas personales, control de gastos, presupuesto, ingresos, gastos, PWA, app financiera">
   <meta name="author" content="Control Financiero Personal">
   <meta name="theme-color" content="#475569">
   
-  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://finanzas.app/">
   <meta property="og:title" content="Control Financiero Personal - Gestiona tus finanzas">
   <meta property="og:description" content="Aplicación móvil para controlar tus finanzas personales. Registra ingresos y gastos, exporta a Excel y mantén el control de tu dinero.">
   <meta property="og:image" content="/icon-512.png">
   
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://finanzas.app/">
   <meta name="twitter:title" content="Control Financiero Personal - Gestiona tus finanzas">
   <meta name="twitter:description" content="Aplicación móvil para controlar tus finanzas personales. Registra ingresos y gastos, exporta a Excel y mantén el control de tu dinero.">
   <meta name="twitter:image" content="/icon-512.png">
   
-  <!-- PWA Tags -->
+
   <link rel="manifest" href="/manifest.json">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Finanzas">
-  
-  <!-- Icons -->
+
   <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
   <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png">
   
@@ -40,7 +36,6 @@
 <body>
   <div id="root"></div>
   
-  <!-- Service Worker Registration -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
